@@ -33,8 +33,10 @@ def setStep(w1, w2, w3, w4):
     GPIO.output(pin3, w3)
     GPIO.output(pin4, w4)
 
-
-n = input("Steps? ")  # how many steps to execute
+if len(sys.argv) == 1:
+    n = input("Steps? ")  # how many steps to execute
+else:
+    n = sys.argv[1]
 m = int(n)
 
 for i in range(0, m):
