@@ -7,6 +7,7 @@
 ########################################################################
 import RPi.GPIO as GPIO
 import time
+import sys
 
 GPIO.setmode(GPIO.BCM)  # Numbers GPIOs by board location
 # motorPins = (11, 16, 18, 22, physical)    #define pins connected to four phase ABCD of stepper motor
