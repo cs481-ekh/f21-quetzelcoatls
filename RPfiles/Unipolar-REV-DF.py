@@ -7,6 +7,7 @@
 ########################################################################
 import RPi.GPIO as GPIO
 import time
+import sys
 
 GPIO.setmode(GPIO.BCM)  # Numbers GPIOs by physical location
 # motorPins = (11, 16, 18, 22, physical)    #define pins connected to four phase ABCD of stepper motor
@@ -33,8 +34,10 @@ def setStep(w1, w2, w3, w4):
     GPIO.output(pin3, w2)
     GPIO.output(pin4, w1)
 
-
-n = input("Steps? ")  # number of steps to be executed
+if len(sys.argv) == 1:
+    n = input("Steps? ")  # how many steps to execute
+else:
+    n = sys.argv[1]
 m = int(n)
 
 for i in range(0, m):
