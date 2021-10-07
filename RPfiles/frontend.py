@@ -14,6 +14,15 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
         break
-    print('You entered ', values[0])
+
+    try:
+        if event == "Fwd":
+            steps = int(values[0])
+            print(f"Forward {steps} steps")
+        elif event == "Rev":
+            steps = int(values[1])
+            print(f"Reverse {steps} steps")
+    except ValueError:
+        print("Invalid step count specified")
 
 window.close()
