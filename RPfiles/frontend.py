@@ -15,5 +15,10 @@ while True:
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
         break
     print('You entered ', values[0])
+    if event == 'Fwd':
+        pytho3 Unipolar-FWD-DF.py values[0]
+    if event == 'Rev':
+        pyhton3 Unipolar-REV-DF.py values[1]
+
 
 window.close()
