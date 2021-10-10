@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import PySimpleGUI as sg
-
+import importlib
+UF = importlib.import_module("Unipolar-FWD-DF")
+UR = importlib.import_module("Unipolar-REV-DF")
 sg.theme('DarkAmber')   # Add a touch of color
 # All the stuff inside your window.
 layout = [  [sg.Text('Steps forward'), sg.InputText(), sg.Button('Fwd')],
@@ -14,11 +16,16 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
         break
-    print('You entered ', values[0])
-    if event == 'Fwd':
-        pytho3 Unipolar-FWD-DF.py values[0]
-    if event == 'Rev':
-        pyhton3 Unipolar-REV-DF.py values[1]
-
+    try:
+        if event == "Fwd":
+            steps = int(values[0])
+            print(f"Forward {steps} steps")
+            UF.do_steps_fwd(steps)#call Unipolar code
+        elif event == "Rev":
+            steps = int(values[1])
+            print(f"Reverse {steps} steps")
+            UR.do_steps_rev(steps)#call unipolar code
+    except ValueError:
+        print("Invalid step count specified")
 
 window.close()
