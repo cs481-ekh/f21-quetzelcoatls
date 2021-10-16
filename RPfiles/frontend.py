@@ -27,7 +27,10 @@ while True:
         elif event == "Rev":
             steps = int(values[1])
             print(f"Reverse {steps} steps")
-            forwardCount-=steps
+            if (forwardCount-steps < 0):
+                forwardCount = 0
+            else:
+                forwardCount-=steps
             UR.do_steps_rev(steps)#call unipolar code
         elif event == "Return to 0":
             if forwardCount > 0:
