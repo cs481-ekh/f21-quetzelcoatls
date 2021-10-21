@@ -10,6 +10,7 @@ t2 = 0.003  # pause time
 
 
 def setStep(w1, w2, w3, w4):
+    time.sleep(0.0025)
     pass
 
 if len(sys.argv) == 1:
