@@ -35,14 +35,16 @@ def move_steps(window, script: str, steps: int) -> bool:
 
         iteration_steps = min(5, steps-steps_taken)
 
-        sg.execute_command_subprocess(
+        sp = sg.execute_command_subprocess(
             "python3",
             *[script, str(iteration_steps)],
             wait=True
         )
-
+        if sp.returncode != 0:
+            sg.popup_error(f'Exception {sp.returncode}!')
+            break
         steps_taken += iteration_steps
-
+        
         window["Status"].Update(f"Steps: {steps_taken} / {steps} ({script})")
         window.Refresh()
 
