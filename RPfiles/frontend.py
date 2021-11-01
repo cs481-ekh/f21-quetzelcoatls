@@ -7,6 +7,7 @@ reverse_script = "mock/Mock-REV-DF.py"
 sg.theme('DarkAmber')   # Add a touch of color
 # All the stuff inside your window.
 layout = [  [sg.Button("Stop", key="Stop", visible=False), sg.Text(key="Status")],
+            [sg.ProgressBar(max_value=0, key="ProgressBar", visible=False)],
             [sg.Text('Steps forward'), sg.InputText(), sg.Button('Fwd', key="Fwd")],
             [sg.Text('Steps reverse'), sg.InputText(), sg.Button('Rev', key="Rev")],
             [sg.Button('Return to 0', key="Ret0")],
@@ -24,6 +25,7 @@ def set_ui_enabled_state(enabled: bool):
 def move_steps(window, script: str, steps: int) -> bool:
     window["Status"].Update("Starting...")
     window["Stop"].Update(visible=True)
+    window["ProgressBar"].Update(0, max=steps, visible=True)
     set_ui_enabled_state(False)
 
     steps_taken = 0
@@ -46,11 +48,13 @@ def move_steps(window, script: str, steps: int) -> bool:
         steps_taken += iteration_steps
         
         window["Status"].Update(f"Steps: {steps_taken} / {steps} ({script})")
+        window["ProgressBar"].Update(steps_taken, max=steps, visible=True)
         window.Refresh()
 
 
     window["Status"].Update(f"Finished. Moved {steps_taken} steps ({script}).")
     window["Stop"].Update(visible=False)
+    window["ProgressBar"].Update(0, max=steps, visible=False)
     set_ui_enabled_state(True)
 
     return True
