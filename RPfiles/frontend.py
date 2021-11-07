@@ -32,7 +32,6 @@ def move_steps(window, script: str, steps: int) -> bool:
         event, values = window.read(timeout=1)
         if event == "Stop":
             break
-
         iteration_steps = min(5, steps-steps_taken)
 
         sp = sg.execute_command_subprocess(
@@ -57,7 +56,7 @@ def move_steps(window, script: str, steps: int) -> bool:
 
 # Create the Window
 window = sg.Window('Stretcher-Matic 9000', layout)
-forwardCount = 0
+stepsTracker = 0
 # Event Loop to process "events" and get the "values" of the inputs
 
 while 1:
@@ -68,23 +67,22 @@ while 1:
         if event == "Fwd":
             steps = int(values[0])
             print(f"Forward {steps} steps")
-            forwardCount+=steps
+            stepsTracker+=steps
             move_steps(window, forward_script, steps)
         elif event == "Rev":
             steps = int(values[1])
             print(f"Reverse {steps} steps")
-            if (forwardCount-steps < 0):
-                forwardCount = 0
-            else:
-                forwardCount-=steps
+            stepsTracker-=steps;
             move_steps(window, reverse_script, steps)
-        elif event == "Return to 0":
-            if forwardCount > 0:
-                print(f"Reverse {forwardCount} steps")
+        elif event == "Ret0":
+            if stepsTracker > 0:
+                print(f"Reverse {stepsTracker} steps")
                 move_steps(window, reverse_script, steps)
-                forwardCount = 0
-            elif forwardCount < 0:
-                print(f"Error! Negative Steps!")
+                stepsTracker = 0
+            elif stepsTracker < 0:
+                print(f"Forward {stepsTracker*-1} steps")
+                move_steps(window, forward_script, steps)
+                stepsTracker = 0
             else:
                 print("Stepper is already at 0")
     except ValueError:
