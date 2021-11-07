@@ -21,7 +21,7 @@ def set_ui_enabled_state(enabled: bool):
 
     window.Refresh()
 
-def move_steps(window, script: str, steps: int) -> bool:
+def move_steps(window, script: str, steps: int) -> int:
     window["Status"].Update("Starting...")
     window["Stop"].Update(visible=True)
     set_ui_enabled_state(False)
@@ -52,7 +52,7 @@ def move_steps(window, script: str, steps: int) -> bool:
     window["Stop"].Update(visible=False)
     set_ui_enabled_state(True)
 
-    return True
+    return steps_taken
 
 # Create the Window
 window = sg.Window('Stretcher-Matic 9000', layout)
@@ -67,22 +67,18 @@ while 1:
         if event == "Fwd":
             steps = int(values[0])
             print(f"Forward {steps} steps")
-            stepsTracker+=steps
-            move_steps(window, forward_script, steps)
+            stepsTracker += move_steps(window, forward_script, steps)
         elif event == "Rev":
             steps = int(values[1])
             print(f"Reverse {steps} steps")
-            stepsTracker-=steps;
-            move_steps(window, reverse_script, steps)
+            stepsTracker -= move_steps(window, reverse_script, steps)
         elif event == "Ret0":
             if stepsTracker > 0:
                 print(f"Reverse {stepsTracker} steps")
-                move_steps(window, reverse_script, steps)
-                stepsTracker = 0
+                stepsTracker -= move_steps(window, reverse_script, stepsTracker)
             elif stepsTracker < 0:
                 print(f"Forward {stepsTracker*-1} steps")
-                move_steps(window, forward_script, steps)
-                stepsTracker = 0
+                stepsTracker += move_steps(window, forward_script, -stepsTracker)
             else:
                 print("Stepper is already at 0")
     except ValueError:
