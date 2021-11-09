@@ -8,7 +8,7 @@ reverse_script = "mock/Mock-REV-DF.py"
 sg.theme('DarkAmber')   # Add a touch of color
 # All the stuff inside your window.
 layout = [  [sg.Button("Stop", key="Stop", visible=False), sg.Text(key="Status")],
-            [sg.Text('Micrometer input:'), sg.InputText(key="micro",enable_events = True, do_not_clear=True)],
+            [sg.Text('Micrometer input'), sg.InputText(key="micro",enable_events = True, do_not_clear=True)],
             [sg.Text('Steps forward'), sg.InputText(), sg.Button('Fwd', key="Fwd")],
             [sg.Text('Steps reverse'), sg.InputText(), sg.Button('Rev', key="Rev")],
             [sg.Button('Return to 0', key="Ret0")],
