@@ -88,8 +88,12 @@ while 1:
             else:
                 print("Stepper is already at 0")
         elif event == "micro":
-            if re.fullmatch("\d.\d{2,3}",values["micro"]) == None:
-                window["micro"].update("")
+            if not re.fullmatch("\d(\.(\d(\d{1,2})?)?)?",values["micro"]):
+                old = re.match("\d\.\d{2,3}\s+",values["micro"]) #button has been pressed multiple times
+                if old:
+                    window["micro"].update(values["micro"][old.end():])
+                else:
+                    window["micro"].update("")
 
     except ValueError:
         print("Invalid step count specified")
