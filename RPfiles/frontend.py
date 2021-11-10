@@ -10,6 +10,7 @@ layout = [  [sg.Button("Stop", key="Stop", visible=False), sg.Text(key="Status")
             [sg.ProgressBar(max_value=0, key="ProgressBar", visible=False)],
             [sg.Text('Steps forward'), sg.InputText(), sg.Button('Fwd', key="Fwd")],
             [sg.Text('Steps reverse'), sg.InputText(), sg.Button('Rev', key="Rev")],
+            [sg.Text('Steps taken: '), sg.Text(size=(15,1), key='OUTPUT')],
             [sg.Button('Return to 0', key="Ret0")],
             [sg.Button('Close', key="Close")]
           ]
@@ -87,5 +88,6 @@ while 1:
                 print("Stepper is already at 0")
     except ValueError:
         print("Invalid step count specified")
+    window['OUTPUT'].update(stepsTracker)
 
 window.close()
