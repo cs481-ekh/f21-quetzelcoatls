@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-def run(sg):
+def run_frontend(sg):
     forward_script = "mock/Mock-FWD-DF.py"
     reverse_script = "mock/Mock-REV-DF.py"
 
@@ -10,7 +10,7 @@ def run(sg):
                 [sg.ProgressBar(max_value=0, key="ProgressBar", visible=False)],
                 [sg.Text('Steps forward'), sg.InputText(), sg.Button('Fwd', key="Fwd")],
                 [sg.Text('Steps reverse'), sg.InputText(), sg.Button('Rev', key="Rev")],
-                [sg.Text('Steps taken: '), sg.Text(size=(15,1), key='OUTPUT')],
+                [sg.Text('Steps taken: '), sg.Text("", size=(15,1), key='OUTPUT')],
                 [sg.Button('Return to 0', key="Ret0")],
                 [sg.Button('Close', key="Close")]
               ]
@@ -88,10 +88,10 @@ def run(sg):
                     print("Stepper is already at 0")
         except ValueError:
             print("Invalid step count specified")
-        window['OUTPUT'].update(stepsTracker)
+        window['OUTPUT'].Update(stepsTracker)
 
     window.close()
 
 if __name__ == '__main__':
     import PySimpleGUI as sg
-    run(sg)
+    run_frontend(sg)
