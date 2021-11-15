@@ -96,6 +96,7 @@ while 1:
                 else:
                     window["micro"].update("")
             if len(values["micro"]) == 4:
+              print("")
               print(f"True Displacement: {values['micro']}", end='', flush=True)
             elif len(values["micro"]) == 5:
               print(f"{values['micro'][4]}")
