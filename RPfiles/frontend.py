@@ -9,8 +9,10 @@ sg.theme('DarkAmber')   # Add a touch of color
 # All the stuff inside your window.
 layout = [  [sg.Button("Stop", key="Stop", visible=False), sg.Text(key="Status")],
             [sg.Text('Micrometer input'), sg.InputText(key="micro",enable_events = True, do_not_clear=True)],
+            [sg.ProgressBar(max_value=0, key="ProgressBar", visible=False)],
             [sg.Text('Steps forward'), sg.InputText(), sg.Button('Fwd', key="Fwd")],
             [sg.Text('Steps reverse'), sg.InputText(), sg.Button('Rev', key="Rev")],
+            [sg.Text('Steps taken: '), sg.Text(size=(15,1), key='OUTPUT')],
             [sg.Button('Return to 0', key="Ret0")],
             [sg.Button('Close', key="Close")]
           ]
@@ -23,9 +25,10 @@ def set_ui_enabled_state(enabled: bool):
 
     window.Refresh()
 
-def move_steps(window, script: str, steps: int) -> bool:
+def move_steps(window, script: str, steps: int) -> int:
     window["Status"].Update("Starting...")
     window["Stop"].Update(visible=True)
+    window["ProgressBar"].Update(0, max=steps, visible=True)
     set_ui_enabled_state(False)
 
     steps_taken = 0
@@ -47,14 +50,16 @@ def move_steps(window, script: str, steps: int) -> bool:
         steps_taken += iteration_steps
         
         window["Status"].Update(f"Steps: {steps_taken} / {steps} ({script})")
+        window["ProgressBar"].Update(steps_taken, max=steps, visible=True)
         window.Refresh()
 
 
     window["Status"].Update(f"Finished. Moved {steps_taken} steps ({script}).")
     window["Stop"].Update(visible=False)
+    window["ProgressBar"].Update(0, max=steps, visible=False)
     set_ui_enabled_state(True)
 
-    return True
+    return steps_taken
 
 # Create the Window
 window = sg.Window('Stretcher-Matic 9000', layout)
@@ -69,22 +74,18 @@ while 1:
         if event == "Fwd":
             steps = int(values[0])
             print(f"Forward {steps} steps")
-            stepsTracker+=steps
-            move_steps(window, forward_script, steps)
+            stepsTracker += move_steps(window, forward_script, steps)
         elif event == "Rev":
             steps = int(values[1])
             print(f"Reverse {steps} steps")
-            stepsTracker-=steps;
-            move_steps(window, reverse_script, steps)
+            stepsTracker -= move_steps(window, reverse_script, steps)
         elif event == "Ret0":
             if stepsTracker > 0:
                 print(f"Reverse {stepsTracker} steps")
-                move_steps(window, reverse_script, steps)
-                stepsTracker = 0
+                stepsTracker -= move_steps(window, reverse_script, stepsTracker)
             elif stepsTracker < 0:
                 print(f"Forward {stepsTracker*-1} steps")
-                move_steps(window, forward_script, steps)
-                stepsTracker = 0
+                stepsTracker += move_steps(window, forward_script, -stepsTracker)
             else:
                 print("Stepper is already at 0")
         elif event == "micro":
@@ -97,5 +98,6 @@ while 1:
 
     except ValueError:
         print("Invalid step count specified")
+    window['OUTPUT'].update(stepsTracker)
 
 window.close()
