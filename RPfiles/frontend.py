@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import PySimpleGUI as sg
+import re
 
 forward_script = "mock/Mock-FWD-DF.py"
 reverse_script = "mock/Mock-REV-DF.py"
@@ -7,6 +8,7 @@ reverse_script = "mock/Mock-REV-DF.py"
 sg.theme('DarkAmber')   # Add a touch of color
 # All the stuff inside your window.
 layout = [  [sg.Button("Stop", key="Stop", visible=False), sg.Text(key="Status")],
+            [sg.Text('Micrometer input'), sg.InputText(key="micro",enable_events = True, do_not_clear=True)],
             [sg.ProgressBar(max_value=0, key="ProgressBar", visible=False)],
             [sg.Text('Steps forward'), sg.InputText(), sg.Button('Fwd', key="Fwd")],
             [sg.Text('Steps reverse'), sg.InputText(), sg.Button('Rev', key="Rev")],
@@ -86,6 +88,14 @@ while 1:
                 stepsTracker += move_steps(window, forward_script, -stepsTracker)
             else:
                 print("Stepper is already at 0")
+        elif event == "micro":
+            if not re.fullmatch("\d(\.(\d(\d{1,2})?)?)?",values["micro"]):
+                old = re.match("\d\.\d{2,3}\s+",values["micro"]) #button has been pressed multiple times
+                if old:
+                    window["micro"].update(values["micro"][old.end():])
+                else:
+                    window["micro"].update("")
+
     except ValueError:
         print("Invalid step count specified")
     window['OUTPUT'].update(stepsTracker)
