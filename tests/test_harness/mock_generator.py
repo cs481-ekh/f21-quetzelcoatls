@@ -19,7 +19,7 @@ class MockGenerator:
                 return mock_subprocess_return()
 
             class _Control:
-                def __init__(self, key, gui_mocker):
+                def __init__(self, key, gui_mocker, *args, **kwargs):
                     self.key = key
                     self.gui_mocker = gui_mocker
 
@@ -68,11 +68,22 @@ class MockGenerator:
                 return GuiMocker._Text(self, *args, **kwargs)
 
             class _InputText(_Control):
-               def __init__(self, gui_mocker):
+               def __init__(self, gui_mocker, *args, **kwargs):
                    self.key = "(Input Text)"
+                   self.micro = 0
+
+                   if "key" in kwargs:
+                       self.key = kwargs['key']
+                       del kwargs['key']
+
                    print(f"GuiTestHarness: Text initialized")
 
-                   super(GuiMocker._InputText, self).__init__(self.key, gui_mocker)
+                   super(GuiMocker._InputText, self).__init__(self.key, gui_mocker, *args, **kwargs)
+                   
+               def Update(self, *args, **kwargs):
+                   if(self.key == 'micro'):
+                       self.micro = args[0]
+                   super(GuiMocker._InputText, self).Update(self, *args, **kwargs)
 
             def InputText(self, *args, **kwargs):
                 return GuiMocker._InputText(self, *args, **kwargs)
