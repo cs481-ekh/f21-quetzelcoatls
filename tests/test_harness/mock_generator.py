@@ -69,8 +69,9 @@ class MockGenerator:
 
             class _InputText(_Control):
                def __init__(self, gui_mocker, *args, **kwargs):
-                   self.key = "(Input Text)"
+                   self.value = "(Input Text)"
                    self.micro = 0
+                   self.key = None
 
                    if "key" in kwargs:
                        self.key = kwargs['key']
@@ -81,8 +82,7 @@ class MockGenerator:
                    super(GuiMocker._InputText, self).__init__(self.key, gui_mocker, *args, **kwargs)
                    
                def Update(self, *args, **kwargs):
-                   if(self.key == 'micro'):
-                       self.micro = args[0]
+                   self.value = args[0]
                    super(GuiMocker._InputText, self).Update(self, *args, **kwargs)
 
             def InputText(self, *args, **kwargs):
