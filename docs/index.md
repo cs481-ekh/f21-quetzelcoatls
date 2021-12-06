@@ -1,13 +1,17 @@
 # CS481 F21 - Quetzelcoatls
 
-## Test header
+### Project Description
 
-Some text
+A membrane stretcher is controlled by two Python scripts running on a Raspberry Pi. Each script takes a command line input to specify the number of steps forward or backwards. The process of running each script was tedious for the end user and does not provide useful historical data. This project focused on engineering a user friendly interface that combines the functionality of both scripts and implemented a logger to track previous inputs.
 
-### Test header
+### Screenshots
 
-Some more text
+![Screenshot 1](/screenshot1.png)
 
-#### Another test header
+### Team Members
 
-Yet more text
+ - Adrianna Mickel
+ - Kelton Christopher
+ - Parker Erway 
+
+### How it works
